@@ -1,0 +1,16 @@
+name: Upload to Higgsfield
+on:
+  push:
+    paths:
+      - '.github/workflows/upload.yml'
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PUT zip to presigned URL
+        run: |
+          curl -fSL -X PUT -H "Content-Type: application/zip" \
+            --data-binary @operation-blackwood-extraction.zip \
+            "https://upload.higgsfield.ai/user_3F88nCEuW03qT4iMECks3A6nyDc/4c2c0e46-e003-4a28-b8de-f63ef34ff054.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAYPNTVMCGYPZMTKFK%2F20260619%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20260619T063202Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=content-type%3Bhost&X-Amz-Signature=20d12e25a682776e94b887677e3182e7e5072642e6fee9a6ef59183ff19d857a" \
+            -w "\nHTTP_STATUS:%{http_code}\n"
